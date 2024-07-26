@@ -101,39 +101,39 @@ st.write("Empower your research journey with Multimodal RAG App: Your intuitive 
 uploaded_file = st.file_uploader(label = "Upload your file",type="pdf")
 bullet_point = "◇"
 
-if uploaded_file is not None:
-    if "pdf_elements" not in st.session_state:
-        st.title("Extraction process:-")
-        st.write(f"{bullet_point} Extraction process started")
-        temp_file="./temp2.pdf"
-        with open(temp_file,"wb") as file:
-            file.write(uploaded_file.getvalue())
-       
-        image_path = "./"
+# if uploaded_file is not None:
+if "pdf_elements" not in st.session_state:
+    st.title("Extraction process:-")
+    st.write(f"{bullet_point} Extraction process started")
+    temp_file="./temp2.pdf"
+    with open(temp_file,"wb") as file:
+        file.write(uploaded_file.getvalue())
+    
+    image_path = "./"
 
-        #@st.cache_data(show_spinner=False)
-       
-        pdf_elements = partition_pdf(
-            temp_file,
-            chunking_strategy="by_title",
-            #chunking_strategy="basic",
-            extract_images_in_pdf=True,
-            infer_table_structure=True,
-            strategy='hi_res',
-            max_characters=3200,
-            new_after_n_chars=3000,
-            combine_text_under_n_chars=2200,
-            image_output_dir_path=image_path
-        )
-         
+    #@st.cache_data(show_spinner=False)
+    
+    pdf_elements = partition_pdf(
+        temp_file,
+        chunking_strategy="by_title",
+        #chunking_strategy="basic",
+        extract_images_in_pdf=True,
+        infer_table_structure=True,
+        strategy='hi_res',
+        max_characters=3200,
+        new_after_n_chars=3000,
+        combine_text_under_n_chars=2200,
+        image_output_dir_path=image_path
+    )
         
-        os.remove("./temp2.pdf")
-        st.session_state["pdf_elements"] = pdf_elements
-        st.write(f"{bullet_point} Extraction process completed")
-        
-    else:
-        # st.write(f"{bullet_point} Extraction already done") 
-        pdf_elements = st.session_state["pdf_elements"]        
+    
+    os.remove("./temp2.pdf")
+    st.session_state["pdf_elements"] = pdf_elements
+    st.write(f"{bullet_point} Extraction process completed")
+    
+else:
+    # st.write(f"{bullet_point} Extraction already done") 
+    pdf_elements = st.session_state["pdf_elements"]        
 
     # Categorize elements by type
     #@st.cache_data(show_spinner=False)
